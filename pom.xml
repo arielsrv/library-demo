@@ -18,7 +18,7 @@
             ${project.basedir}${file.separator}src${file.separator}main${file.separator}resources${file.separator}docs${file.separator}
         </doc.dir>
 
-        <jooby.version>4.5.3</jooby.version>
+        <jooby.version>4.5.4</jooby.version>
         <jooby.compileExtensions>java,adoc</jooby.compileExtensions>
 
         <maven.compiler.source>25</maven.compiler.source>
