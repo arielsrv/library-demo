@@ -23,4 +23,6 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
-      run: mvn -B compile
+      # verify runs unit tests (surefire) and integration tests (failsafe).
+      # Integration tests start a MySQL container, available on ubuntu-latest runners.
+      run: mvn -B verify

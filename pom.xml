@@ -21,6 +21,9 @@
         <jooby.version>4.5.4</jooby.version>
         <jooby.compileExtensions>java,adoc</jooby.compileExtensions>
 
+        <mockito.version>5.23.0</mockito.version>
+        <testcontainers.version>2.0.5</testcontainers.version>
+
         <maven.compiler.source>25</maven.compiler.source>
         <maven.compiler.target>25</maven.compiler.target>
         <maven.compiler.parameters>true</maven.compiler.parameters>
@@ -93,6 +96,25 @@
             <version>6.1.2</version>
             <scope>test</scope>
         </dependency>
+        <!-- MockRouter: exercise routes without booting a server -->
+        <dependency>
+            <groupId>io.jooby</groupId>
+            <artifactId>jooby-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Integration tests: real MySQL, same image as docker-compose -->
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers-mysql</artifactId>
+            <version>${testcontainers.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -123,9 +145,27 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
+            <!-- Unit tests: *Test.java -->
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.5.6</version>
+                <configuration>
+                    <!-- Mockito's inline mock maker attaches itself at runtime -->
+                    <argLine>-XX:+EnableDynamicAgentLoading</argLine>
+                </configuration>
+            </plugin>
+            <!-- Integration tests: *IT.java, need Docker -->
+            <plugin>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>3.5.6</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <!-- jooby:run -->
             <plugin>
