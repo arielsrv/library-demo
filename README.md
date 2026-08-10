@@ -15,6 +15,16 @@
 
     mvn jooby:run
 
+## Tests
+
+Unit tests (`*Test`) need nothing but a JVM:
+
+    mvn test
+
+Integration tests (`*IT`) boot a MySQL container via Testcontainers, so Docker must be running:
+
+    mvn verify
+
 ## Output:
 
 - http://localhost:8080/docs
