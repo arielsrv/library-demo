@@ -18,7 +18,7 @@
             ${project.basedir}${file.separator}src${file.separator}main${file.separator}resources${file.separator}docs${file.separator}
         </doc.dir>
 
-        <jooby.version>4.5.3</jooby.version>
+        <jooby.version>4.5.4</jooby.version>
         <jooby.compileExtensions>java,adoc</jooby.compileExtensions>
 
         <maven.compiler.source>25</maven.compiler.source>
@@ -55,7 +55,7 @@
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-mysql</artifactId>
-            <version>13.0.0</version>
+            <version>13.1.0</version>
         </dependency>
         <dependency>
             <groupId>io.jooby</groupId>
@@ -69,7 +69,7 @@
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
-            <version>9.7.0</version>
+            <version>26.7.0</version>
         </dependency>
         <!-- openapi outout -->
         <dependency>
@@ -84,13 +84,13 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>6.1.1</version>
+            <version>6.1.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>6.1.1</version>
+            <version>6.1.2</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
