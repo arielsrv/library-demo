@@ -19,14 +19,10 @@ import org.mockito.ArgumentCaptor;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * Route-level tests: they run the generated router ({@link LibraryApi_}) so URL patterns and
@@ -38,6 +34,15 @@ class LibraryApiRouterTest {
 
     private Library library;
     private MockRouter router;
+
+    private static MockContext queryString(String queryString) {
+        return new MockContext().setQueryString("?" + queryString);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Page<Book> emptyPage() {
+        return mock(Page.class);
+    }
 
     @BeforeEach
     void setUp() {
@@ -111,14 +116,5 @@ class LibraryApiRouterTest {
     void browseWithoutPagingParamsIsRejected() {
         assertThrows(BadRequestException.class,
                 () -> router.get("/library/books", queryString("title=Dune")));
-    }
-
-    private static MockContext queryString(String queryString) {
-        return new MockContext().setQueryString("?" + queryString);
-    }
-
-    @SuppressWarnings("unchecked")
-    private static Page<Book> emptyPage() {
-        return mock(Page.class);
     }
 }

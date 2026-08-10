@@ -2,7 +2,6 @@ package app.api;
 
 import app.App;
 import app.support.TestDatabase;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jooby.Server;
 import io.jooby.netty.NettyServer;
@@ -18,9 +17,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * End-to-end tests: the whole application (Netty, Guice, Hikari, Flyway, Hibernate, Jackson) booted
@@ -52,6 +49,25 @@ class LibraryApiIT {
     static void stopApplication() {
         if (server != null) {
             server.stop();
+        }
+    }
+
+    private static HttpResponse<String> get(String path) throws Exception {
+        var request = HttpRequest.newBuilder(URI.create(baseUrl + path)).GET().build();
+        return CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
+    private static HttpResponse<String> post(String path, String body) throws Exception {
+        var request = HttpRequest.newBuilder(URI.create(baseUrl + path))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(body))
+                .build();
+        return CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
+    private static int freePort() throws IOException {
+        try (var socket = new ServerSocket(0)) {
+            return socket.getLocalPort();
         }
     }
 
@@ -140,24 +156,5 @@ class LibraryApiIT {
         var reloaded = get("/library/books/" + isbn);
         assertEquals(200, reloaded.statusCode());
         assertEquals("End To End Test Book", JSON.readTree(reloaded.body()).get("title").asText());
-    }
-
-    private static HttpResponse<String> get(String path) throws Exception {
-        var request = HttpRequest.newBuilder(URI.create(baseUrl + path)).GET().build();
-        return CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
-    }
-
-    private static HttpResponse<String> post(String path, String body) throws Exception {
-        var request = HttpRequest.newBuilder(URI.create(baseUrl + path))
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(body))
-                .build();
-        return CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
-    }
-
-    private static int freePort() throws IOException {
-        try (var socket = new ServerSocket(0)) {
-            return socket.getLocalPort();
-        }
     }
 }

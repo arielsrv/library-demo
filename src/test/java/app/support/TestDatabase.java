@@ -23,7 +23,9 @@ public final class TestDatabase {
     private TestDatabase() {
     }
 
-    /** Boots the container once per JVM. Testcontainers stops it when the JVM exits. */
+    /**
+     * Boots the container once per JVM. Testcontainers stops it when the JVM exits.
+     */
     public static synchronized MySQLContainer start() {
         if (!MYSQL.isRunning()) {
             MYSQL.start();

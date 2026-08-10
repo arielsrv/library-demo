@@ -14,14 +14,10 @@ import org.mockito.ArgumentCaptor;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * Unit tests for the front desk controller: no database, no server, no JSON.
@@ -33,6 +29,11 @@ class LibraryApiTest {
 
     private Library library;
     private LibraryApi api;
+
+    @SuppressWarnings("unchecked")
+    private static Page<Book> emptyPage() {
+        return mock(Page.class);
+    }
 
     @BeforeEach
     void setUp() {
@@ -126,10 +127,5 @@ class LibraryApiTest {
         var captor = ArgumentCaptor.forClass(PageRequest.class);
         verify(library).findBooksByTitle(eq(title), captor.capture());
         return captor.getValue();
-    }
-
-    @SuppressWarnings("unchecked")
-    private static Page<Book> emptyPage() {
-        return mock(Page.class);
     }
 }

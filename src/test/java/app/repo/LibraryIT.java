@@ -1,10 +1,6 @@
 package app.repo;
 
-import app.model.Address;
-import app.model.Author;
-import app.model.Book;
-import app.model.BookType;
-import app.model.Publisher;
+import app.model.*;
 import app.support.TestDatabase;
 import jakarta.data.page.PageRequest;
 import org.hibernate.SessionFactory;
@@ -20,10 +16,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Integration tests for the Jakarta Data repository against a real MySQL.
@@ -72,6 +65,17 @@ class LibraryIT {
         }
         if (sessionFactory != null) {
             sessionFactory.close();
+        }
+    }
+
+    private static void inTransaction(Runnable work) {
+        var tx = session.beginTransaction();
+        try {
+            work.run();
+            tx.commit();
+        } catch (RuntimeException failure) {
+            tx.rollback();
+            throw failure;
         }
     }
 
@@ -212,17 +216,6 @@ class LibraryIT {
         } finally {
             author.address = original;
             inTransaction(() -> library.update(author));
-        }
-    }
-
-    private static void inTransaction(Runnable work) {
-        var tx = session.beginTransaction();
-        try {
-            work.run();
-            tx.commit();
-        } catch (RuntimeException failure) {
-            tx.rollback();
-            throw failure;
         }
     }
 }
