@@ -135,7 +135,7 @@
                         <path>
                             <groupId>org.hibernate.orm</groupId>
                             <artifactId>hibernate-processor</artifactId>
-                            <version>7.4.5.Final</version>
+                            <version>7.4.6.Final</version>
                         </path>
                         <path>
                             <groupId>io.jooby</groupId>
